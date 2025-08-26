@@ -101,19 +101,7 @@ const VoiceCoach = () => {
               </CardHeader>
               <CardContent>
                 {!isActive ? (
-                  <div className="text-center py-12">
-                    <div className="w-20 h-20 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <Play className="w-10 h-10 text-accent" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-primary mb-3">Ready to Start Training</h3>
-                    <p className="text-muted-foreground mb-6">
-                      Click the button below to start your voice coaching session and practice hospitality scenarios.
-                    </p>
-                    <Button variant="hero" size="lg" onClick={handleStartTest}>
-                      <Phone className="w-5 h-5 mr-2" />
-                      Talk with AI
-                    </Button>
-                  </div>
+                  
                 ) : (
                   <div className="min-h-[400px] bg-secondary/30 border-2 border-dashed border-accent/30 rounded-xl flex items-center justify-center">
                     <div className="text-center">
