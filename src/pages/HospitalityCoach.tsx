@@ -55,6 +55,14 @@ const HospitalityCoach = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const vapiWidget = document.querySelector('vapi-widget');
+    if (vapiWidget) {
+      const consentContentString = "By clicking \"Agree,\" and each time I interact with this AI agent, I consent to the recording, storage, and sharing of my communications with third-party service providers, and as otherwise described in our Terms of Service.";
+      vapiWidget.setAttribute('consent-content', consentContentString);
+    }
+  }, []);
+
   const handleStopTest = () => {
     toast({
       title: "Training Session Ended",
@@ -162,7 +170,7 @@ const HospitalityCoach = () => {
               </CardContent>
             </Card>
         
-        <vapi-widget  public-key="20234fe3-f02a-4cd7-9cf3-addcf5935775"  assistant-id="5fe73bc9-a36a-4bdc-b6d2-e84bc3874497"  mode="voice"  theme="dark"  base-bg-color="#3d6981"  accent-color="#8b98a5"  cta-button-color="#298dc2"  cta-button-text-color="#ffffff"  border-radius="medium"  size="full"  position="top-left"  title="TALK WITH AI"  start-button-text="Start"  end-button-text="End Call"  chat-first-message="Hey, How can I help you today?"  chat-placeholder="Type your message..."  voice-show-transcript="true"  consent-required="true"  consent-title="Terms and conditions"  consent-content="By clicking \"Agree,\" and each time I interact with this AI agent, I consent to the recording, storage, and sharing of my communications with third-party service providers, and as otherwise described in our Terms of Service."  consent-storage-key="vapi_widget_consent"></vapi-widget><script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
+        <vapi-widget  public-key="20234fe3-f02a-4cd7-9cf3-addcf5935775"  assistant-id="5fe73bc9-a36a-4bdc-b6d2-e84bc3874497"  mode="voice"  theme="dark"  base-bg-color="#3d6981"  accent-color="#8b98a5"  cta-button-color="#298dc2"  cta-button-text-color="#ffffff"  border-radius="medium"  size="full"  position="top-left"  title="TALK WITH AI"  start-button-text="Start"  end-button-text="End Call"  chat-first-message="Hey, How can I help you today?"  chat-placeholder="Type your message..."  voice-show-transcript="true"  consent-required="true"  consent-title="Terms and conditions"  consent-storage-key="vapi_widget_consent"></vapi-widget><script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
         </div>
       </div>
     </div>
