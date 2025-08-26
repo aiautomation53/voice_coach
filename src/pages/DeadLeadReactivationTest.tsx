@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,14 +7,50 @@ import { Label } from "@/components/ui/label";
 import Navigation from "@/components/Navigation";
 import { ArrowLeft, Target, Play, Star, MessageSquare, Clock, CheckCircle, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const DeadLeadReactivationTest = () => {
   const [isActive, setIsActive] = useState(false);
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
   const { toast } = useToast();
+  const [user, setUser] = useState<any>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const user = { name: "John Smith", email: "john@example.com" };
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error("Error fetching user:", error.message);
+        setIsAuthenticated(false);
+        setUser(null);
+      } else if (data?.user) {
+        setUser({ name: data.user.user_metadata?.full_name || data.user.email, email: data.user.email });
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    };
+
+    fetchUser();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          setUser({ name: session.user.user_metadata?.full_name || session.user.email, email: session.user.email });
+          setIsAuthenticated(true);
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+      }
+    );
+
+    return () => {
+      authListener?.unsubscribe();
+    };
+  }, []);
 
   const handleStartTest = () => {
     setIsActive(true);
@@ -54,9 +90,24 @@ const DeadLeadReactivationTest = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent-lighter/10">
       <Navigation 
-        isAuthenticated={true} 
+        isAuthenticated={isAuthenticated} 
         user={user} 
-        onLogout={() => console.log("Logout")}
+        onLogout={async () => {
+          const { error } = await supabase.auth.signOut();
+          if (error) {
+            console.error("Error signing out:", error.message);
+            toast({
+              title: "Logout Failed",
+              description: error.message,
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Logged Out",
+              description: "You have been successfully logged out.",
+            });
+          }
+        }}
       />
       
       <div className="container mx-auto px-4 py-8">
