@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import { Bot, Zap, Phone, Target, ArrowRight, CheckCircle, Star } from "lucide-react";
+import { Bot, Headphones, Phone, Target, ArrowRight, CheckCircle, Star } from "lucide-react";
 
 const Landing = () => {
   return (
@@ -14,8 +14,8 @@ const Landing = () => {
         <div className="container mx-auto px-4 py-20 lg:py-32">
           <div className="max-w-4xl mx-auto text-center text-primary-foreground animate-fade-in">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight">
-              Test Your AI Voice
-              <span className="bg-gradient-to-r from-accent-light to-accent bg-clip-text text-transparent"> Agents</span>
+              Voice Coach
+              <span className="bg-gradient-to-r from-accent-light to-accent bg-clip-text text-transparent"> Platform</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-primary-foreground/90 max-w-3xl mx-auto leading-relaxed">
               Experience the power of AI-driven sales automation. Test three specialized voice agents designed to convert, engage, and reactivate your leads with human-like conversations.
@@ -55,35 +55,35 @@ const Landing = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Speed to Lead */}
+            {/* Hospitality Coach */}
             <Card className="group hover-lift hover-glow bg-gradient-card border-card-border shadow-soft animate-scale-in">
               <CardHeader className="text-center pb-4">
                 <div className="w-16 h-16 bg-gradient-accent rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <Zap className="w-8 h-8 text-primary-foreground" />
+                  <Headphones className="w-8 h-8 text-primary-foreground" />
                 </div>
-                <CardTitle className="text-2xl text-primary">Speed to Lead</CardTitle>
+                <CardTitle className="text-2xl text-primary">Hospitality Coach</CardTitle>
                 <CardDescription className="text-base">
-                  Convert website visitors into qualified leads instantly
+                  Practice hospitality customer service scenarios
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3 mb-6">
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">Instant response to form submissions</span>
+                    <span className="text-sm">Realistic hospitality role-playing scenarios</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">Intelligent lead qualification</span>
+                    <span className="text-sm">Instant feedback on communication skills</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">Seamless calendar booking</span>
+                    <span className="text-sm">Improved guest satisfaction ratings</span>
                   </li>
                 </ul>
                 <Link to="/register" className="w-full block">
                   <Button className="w-full" variant="primary">
-                    Test Speed to Lead
+                    Test Coach
                   </Button>
                 </Link>
               </CardContent>
@@ -186,10 +186,10 @@ const Landing = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Bot className="w-6 h-6" />
-            <span className="font-bold text-lg">AI Voice Tester</span>
+            <span className="font-bold text-lg">Voice Coach</span>
           </div>
           <p className="text-primary-foreground/70">
-            © 2024 AI Voice Tester. All rights reserved.
+            © 2024 Voice Coach. All rights reserved.
           </p>
         </div>
       </footer>
