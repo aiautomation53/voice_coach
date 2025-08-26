@@ -70,9 +70,9 @@ const Register = () => {
     } else {
       toast({
         title: "Registration Successful!",
-        description: "Please check your email for a confirmation link.",
+        description: "Welcome! Redirecting to dashboard...",
       });
-      navigate("/dashboard"); // Or navigate to a confirmation page
+      navigate("/dashboard");
     }
 
     setIsLoading(false);

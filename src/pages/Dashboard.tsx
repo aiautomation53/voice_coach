@@ -57,8 +57,8 @@ const Dashboard = () => {
 
   const agents = [
     {
-      id: "voice-coach",
-      title: "Voice Coach",
+      id: "hospitality-coach",
+      title: "Hospitality Coach",
       description: "Practice hospitality customer service scenarios with AI voice training.",
       features: [
         "Realistic hospitality scenarios",
@@ -72,34 +72,34 @@ const Dashboard = () => {
       testUrl: "/test/hospitality-coach"
     },
     {
-      id: "inbound",
-      title: "Inbound Sales Agent",
-      description: "Handle incoming calls with professional AI sales expertise and advanced objection handling.",
+      id: "real-estate-coach",
+      title: "Real Estate Coach",
+      description: "Practice real estate sales scenarios with AI voice training.",
       features: [
-        "24/7 professional call handling",
-        "Advanced objection handling",
-        "Product knowledge database",
-        "Seamless human handoff"
+        "Realistic real estate scenarios",
+        "Voice-based interaction training",
+        "Sales negotiation skill development",
+        "Instant feedback and coaching"
       ],
-      scenario: "Ideal for businesses receiving high volumes of sales inquiries and support calls.",
-      icon: Phone,
+      scenario: "Ideal for real estate agents looking to refine their sales pitch and client interaction skills.",
+      icon: Phone, // Using Phone icon for now, can be changed later
       color: "from-primary to-primary-light",
-      testUrl: "/test/inbound"
+      testUrl: "/test/real-estate-coach"
     },
     {
-      id: "dead-lead-reactivation",
-      title: "Dead Lead Reactivation",
-      description: "Revive dormant leads with personalized reactivation campaigns and intelligent timing.",
+      id: "insurance-coach",
+      title: "Insurance Coach",
+      description: "Practice insurance sales scenarios with AI voice training.",
       features: [
-        "Personalized outreach campaigns",
-        "Intelligent timing optimization",
-        "Multi-channel engagement",
-        "High conversion recovery"
+        "Realistic insurance scenarios",
+        "Voice-based interaction training",
+        "Policy explanation and sales skills",
+        "Instant feedback and coaching"
       ],
-      scenario: "Transform your inactive lead database into a revenue-generating asset.",
-      icon: Target,
+      scenario: "Great for insurance agents to practice explaining complex policies and handling client objections.",
+      icon: Target, // Using Target icon for now, can be changed later
       color: "from-accent-light to-primary-lighter",
-      testUrl: "/test/dead-lead-reactivation"
+      testUrl: "/test/insurance-coach"
     }
   ];
 
