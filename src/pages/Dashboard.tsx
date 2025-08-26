@@ -4,18 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import { Headphones, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const Dashboard = () => {
-  // Mock user data
-  const user = { name: "John Smith", email: "john@example.com" };
-
-  const stats = [
-    { label: "Tests Completed", value: "12", icon: Activity, color: "text-accent" },
-    { label: "Success Rate", value: "87%", icon: TrendingUp, color: "text-success" },
-    { label: "Active Agents", value: "3", icon: Users, color: "text-primary" },
-    { label: "Total Sessions", value: "45m", icon: Clock, color: "text-muted-foreground" },
-  ];
-
   const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
 
@@ -56,9 +47,6 @@ const Dashboard = () => {
       navigate("/login");
     }
   };
-
-  // Mock user data (will be replaced by actual user data)
-  // const user = { name: "John Smith", email: "john@example.com" };
 
   const stats = [
     { label: "Tests Completed", value: "12", icon: Activity, color: "text-accent" },
@@ -126,20 +114,12 @@ const Dashboard = () => {
         user={user ? { name: user.user_metadata?.full_name || user.email, email: user.email } : null} 
         onLogout={handleLogout}
       />
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent-lighter/10">
-      <Navigation 
-        isAuthenticated={true} 
-        user={user} 
-        onLogout={() => console.log("Logout")}
-      />
       
       <div className="container mx-auto px-4 py-8">
         {/* Welcome Header */}
         <div className="mb-8 animate-fade-in">
           <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">
-            Welcome back, {user.name}!
+            Welcome back, {user.user_metadata?.full_name || user.email}!
           </h1>
           <p className="text-lg text-muted-foreground">
             Ready to test your AI voice agents? Choose an agent below to start your testing session.
