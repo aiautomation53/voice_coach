@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
-import SpeedToLeadTest from "./pages/SpeedToLeadTest";
+import HospitalityCoach from "./pages/HospitalityCoach";
 import InboundTest from "./pages/InboundTest";
 import DeadLeadReactivationTest from "./pages/DeadLeadReactivationTest";
 import NotFound from "./pages/NotFound";
@@ -27,7 +27,7 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/test/hospitality-coach" element={<SpeedToLeadTest />} />
+          <Route path="/test/hospitality-coach" element={<HospitalityCoach />} />
           <Route path="/test/inbound" element={<InboundTest />} />
           <Route path="/test/dead-lead-reactivation" element={<DeadLeadReactivationTest />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

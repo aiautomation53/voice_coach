@@ -6,22 +6,56 @@ import Navigation from "@/components/Navigation";
 import { ArrowLeft, Headphones, Play, MessageSquare, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const VoiceCoach = () => {
-  const [isActive, setIsActive] = useState(false);
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import Navigation from "@/components/Navigation";
+import { ArrowLeft, Headphones, Play, MessageSquare, Phone } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+
+const HospitalityCoach = () => {
   const { toast } = useToast();
+  const [user, setUser] = useState<any>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const user = { name: "John Smith", email: "john@example.com" };
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error("Error fetching user:", error.message);
+        setIsAuthenticated(false);
+        setUser(null);
+      } else if (data?.user) {
+        setUser({ name: data.user.email, email: data.user.email });
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    };
 
-  const handleStartTest = () => {
-    setIsActive(true);
-    toast({
-      title: "Hospitality Training Started",
-      description: "Hospitality Coach is now ready for training.",
-    });
-  };
+    fetchUser();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          setUser({ name: session.user.email, email: session.user.email });
+          setIsAuthenticated(true);
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+      }
+    );
+
+    return () => {
+      authListener?.unsubscribe();
+    };
+  }, []);
 
   const handleStopTest = () => {
-    setIsActive(false);
     toast({
       title: "Training Session Ended",
       description: "Great practice! Keep improving your customer service skills.",
@@ -31,9 +65,24 @@ const VoiceCoach = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent-lighter/10">
       <Navigation 
-        isAuthenticated={true} 
+        isAuthenticated={isAuthenticated} 
         user={user} 
-        onLogout={() => console.log("Logout")}
+        onLogout={async () => {
+          const { error } = await supabase.auth.signOut();
+          if (error) {
+            console.error("Error signing out:", error.message);
+            toast({
+              title: "Logout Failed",
+              description: error.message,
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Logged Out",
+              description: "You have been successfully logged out.",
+            });
+          }
+        }}
       />
       
       <div className="container mx-auto px-4 py-8">
@@ -100,22 +149,18 @@ const VoiceCoach = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {!isActive ? (
-                  
-                ) : (
-                  <div className="min-h-[400px] bg-secondary/30 border-2 border-dashed border-accent/30 rounded-xl flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                        <Headphones className="w-8 h-8 text-primary-foreground" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-primary mb-2">Hospitality Coach Active</h3>
-                      <p className="text-muted-foreground mb-4">The AI voice training session is now active</p>
-                      <Button variant="outline" onClick={handleStopTest}>
-                        End Training Session
-                      </Button>
+                <div className="min-h-[400px] bg-secondary/30 border-2 border-dashed border-accent/30 rounded-xl flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                      <Headphones className="w-8 h-8 text-primary-foreground" />
                     </div>
+                    <h3 className="text-lg font-semibold text-primary mb-2">Hospitality Coach Active</h3>
+                    <p className="text-muted-foreground mb-4">The AI voice training session is now active</p>
+                    <Button variant="outline" onClick={handleStopTest}>
+                      End Training Session
+                    </Button>
                   </div>
-                )}
+                </div>
               </CardContent>
             </Card>
         </div>
@@ -124,4 +169,4 @@ const VoiceCoach = () => {
   );
 };
 
-export default VoiceCoach;
+export default HospitalityCoach;
