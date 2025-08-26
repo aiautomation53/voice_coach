@@ -104,6 +104,7 @@ const Landing = () => {
                   consent-storage-key="vapi_widget_consent"
                 ></vapi-widget>
                 <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
+                
               </CardContent>
             </Card>
 
