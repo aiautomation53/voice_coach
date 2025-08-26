@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,17 +50,30 @@ const Register = () => {
 
     setIsLoading(true);
 
-    // Simulate registration process
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    toast({
-      title: "Registration Successful!",
-      description: "Your account has been created. Redirecting to dashboard...",
+    const { error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        data: {
+          full_name: formData.fullName,
+          company: formData.company,
+        },
+      },
     });
 
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 1000);
+    if (error) {
+      toast({
+        title: "Registration Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Registration Successful!",
+        description: "Please check your email for a confirmation link.",
+      });
+      navigate("/dashboard"); // Or navigate to a confirmation page
+    }
 
     setIsLoading(false);
   };

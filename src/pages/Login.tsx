@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,25 +22,23 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate login process
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-    // For demo purposes, accept any email/password
-    if (email && password) {
+    if (error) {
+      toast({
+        title: "Login Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
       toast({
         title: "Login Successful",
         description: "Welcome back! Redirecting to dashboard...",
       });
-      
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
-    } else {
-      toast({
-        title: "Login Failed",
-        description: "Please enter both email and password.",
-        variant: "destructive",
-      });
+      navigate("/dashboard");
     }
 
     setIsLoading(false);

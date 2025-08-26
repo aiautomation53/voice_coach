@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,14 +19,23 @@ const ResetPassword = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate password reset process
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    setEmailSent(true);
-    toast({
-      title: "Reset Email Sent",
-      description: "Check your email for password reset instructions.",
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/update-password', // You might need a dedicated page for password update
     });
+
+    if (error) {
+      toast({
+        title: "Password Reset Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      setEmailSent(true);
+      toast({
+        title: "Reset Email Sent",
+        description: "Check your email for password reset instructions.",
+      });
+    }
 
     setIsLoading(false);
   };
