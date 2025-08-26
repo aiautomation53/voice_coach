@@ -187,7 +187,7 @@ const HospitalityCoach = () => {
         
         <div className="flex justify-start pl-0">
             <vapi-widget              public-key="20234fe3-f02a-4cd7-9cf3-addcf5935775"
-              assistant-id="565a2701-d42e-487e-8f94-9edfac828d03"
+              assistant-id="5fe73bc9-a36a-4bdc-b6d2-e84bc3874497"
               mode="voice"
               theme="dark"
               base-bg-color="#000000"
