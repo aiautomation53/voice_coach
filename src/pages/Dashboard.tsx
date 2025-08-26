@@ -29,7 +29,7 @@ const Dashboard = () => {
       scenario: "Perfect for training hotel staff in customer service excellence and handling various guest situations.",
       icon: Headphones,
       color: "from-accent to-accent-light",
-      testUrl: "/test/speed-to-lead"
+      testUrl: "/test/hospitality-coach"
     },
     {
       id: "inbound",

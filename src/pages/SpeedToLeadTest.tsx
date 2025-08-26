@@ -15,8 +15,8 @@ const VoiceCoach = () => {
   const handleStartTest = () => {
     setIsActive(true);
     toast({
-      title: "Voice Training Started",
-      description: "Voice Coach is now ready for hospitality training.",
+      title: "Hospitality Training Started",
+      description: "Hospitality Coach is now ready for training.",
     });
   };
 
@@ -43,7 +43,7 @@ const VoiceCoach = () => {
             Dashboard
           </Link>
           <span className="text-muted-foreground">/</span>
-          <span className="text-primary font-medium">Voice Coach Training</span>
+          <span className="text-primary font-medium">Hospitality Coach Training</span>
         </div>
 
         {/* Header */}
@@ -62,7 +62,7 @@ const VoiceCoach = () => {
               <Headphones className="w-8 h-8 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-primary">Voice Coach</h1>
+              <h1 className="text-3xl font-bold text-primary">Hospitality Coach</h1>
               <p className="text-lg text-muted-foreground">Practice hospitality customer service scenarios</p>
             </div>
           </div>
@@ -120,7 +120,7 @@ const VoiceCoach = () => {
                       <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                         <Headphones className="w-8 h-8 text-primary-foreground" />
                       </div>
-                      <h3 className="text-lg font-semibold text-primary mb-2">Voice Coach Active</h3>
+                      <h3 className="text-lg font-semibold text-primary mb-2">Hospitality Coach Active</h3>
                       <p className="text-muted-foreground mb-4">The AI voice training session is now active</p>
                       <Button variant="outline" onClick={handleStopTest}>
                         End Training Session
