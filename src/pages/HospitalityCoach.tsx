@@ -178,7 +178,6 @@ const HospitalityCoach = () => {
             </Card>
         
         
-        {/* Added a comment to trigger a new build */}
         <div className="flex justify-start pl-0">
             <vapi-widget              public-key="20234fe3-f02a-4cd7-9cf3-addcf5935775"
               assistant-id="565a2701-d42e-487e-8f94-9edfac828d03"
