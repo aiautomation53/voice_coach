@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import { Zap, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clock } from "lucide-react";
+import { Headphones, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clock } from "lucide-react";
 
 const Dashboard = () => {
   // Mock user data
@@ -17,17 +17,17 @@ const Dashboard = () => {
 
   const agents = [
     {
-      id: "speed-to-lead",
-      title: "Speed to Lead",
-      description: "Convert website visitors into qualified leads instantly with lightning-fast response times.",
+      id: "voice-coach",
+      title: "Voice Coach",
+      description: "Practice hospitality customer service scenarios with AI voice training.",
       features: [
-        "Instant form response (< 30 seconds)",
-        "Intelligent lead qualification",
-        "Automatic calendar booking",
-        "CRM integration ready"
+        "Realistic hospitality scenarios",
+        "Voice-based interaction training",
+        "Customer service skill development",
+        "Instant feedback and coaching"
       ],
-      scenario: "Perfect for high-traffic websites where quick response determines conversion success.",
-      icon: Zap,
+      scenario: "Perfect for training hotel staff in customer service excellence and handling various guest situations.",
+      icon: Headphones,
       color: "from-accent to-accent-light",
       testUrl: "/test/speed-to-lead"
     },
@@ -161,7 +161,7 @@ const Dashboard = () => {
             <div className="grid md:grid-cols-3 gap-4">
               <div className="text-center p-4">
                 <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <Zap className="w-6 h-6 text-accent" />
+                  <Headphones className="w-6 h-6 text-accent" />
                 </div>
                 <h5 className="font-semibold text-primary mb-2">Be Natural</h5>
                 <p className="text-sm text-muted-foreground">Interact with agents as you would in real scenarios</p>
