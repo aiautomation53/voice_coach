@@ -28,7 +28,7 @@ const HospitalityCoach = () => {
         setIsAuthenticated(false);
         setUser(null);
       } else if (data?.user) {
-        setUser({ name: data.user.email, email: data.user.email });
+        setUser({ name: data.user.user_metadata?.full_name || data.user.email, email: data.user.email });
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
