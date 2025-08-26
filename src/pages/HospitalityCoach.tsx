@@ -156,9 +156,7 @@ const HospitalityCoach = () => {
                     </div>
                     <h3 className="text-lg font-semibold text-primary mb-2">Hospitality Coach Active</h3>
                     <p className="text-muted-foreground mb-4">The AI voice training session is now active</p>
-                    <Button variant="outline" onClick={handleStopTest}>
-                      End Training Session
-                    </Button>
+                    
                   </div>
                 </div>
               </CardContent>
