@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
@@ -7,6 +8,57 @@ import { Headphones, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clo
 const Dashboard = () => {
   // Mock user data
   const user = { name: "John Smith", email: "john@example.com" };
+
+  const stats = [
+    { label: "Tests Completed", value: "12", icon: Activity, color: "text-accent" },
+    { label: "Success Rate", value: "87%", icon: TrendingUp, color: "text-success" },
+    { label: "Active Agents", value: "3", icon: Users, color: "text-primary" },
+    { label: "Total Sessions", value: "45m", icon: Clock, color: "text-muted-foreground" },
+  ];
+
+  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error("Error getting session:", error.message);
+        navigate("/login");
+      } else if (session) {
+        setUser(session.user);
+      } else {
+        navigate("/login");
+      }
+    };
+
+    getSession();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setUser(session.user);
+      } else {
+        setUser(null);
+        navigate("/login");
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error logging out:", error.message);
+    } else {
+      navigate("/login");
+    }
+  };
+
+  // Mock user data (will be replaced by actual user data)
+  // const user = { name: "John Smith", email: "john@example.com" };
 
   const stats = [
     { label: "Tests Completed", value: "12", icon: Activity, color: "text-accent" },
@@ -62,6 +114,18 @@ const Dashboard = () => {
       testUrl: "/test/dead-lead-reactivation"
     }
   ];
+
+  if (!user) {
+    return null; // Or a loading spinner
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent-lighter/10">
+      <Navigation 
+        isAuthenticated={!!user} 
+        user={user ? { name: user.user_metadata?.full_name || user.email, email: user.email } : null} 
+        onLogout={handleLogout}
+      />
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-secondary/20 to-accent-lighter/10">
