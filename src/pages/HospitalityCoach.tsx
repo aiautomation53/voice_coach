@@ -21,6 +21,13 @@ const ensureVapiScript = () => {
     script.src = "https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js";
     script.async = true;
     document.head.appendChild(script);
+
+    // Set consent-content directly on the widget element
+    const vapiWidget = document.querySelector('vapi-widget');
+    if (vapiWidget) {
+      const consentContentString = "By clicking \"Agree,\" and each time I interact with this AI agent, I consent to the recording, storage, and sharing of my communications with third-party service providers, and as otherwise described in our Terms of Service.";
+      vapiWidget.setAttribute('consent-content', consentContentString);
+    }
   }
 };
 
@@ -198,7 +205,6 @@ const HospitalityCoach = () => {
               voice-show-transcript="true"
               consent-required="true"
               consent-title="Terms and conditions"
-              consent-content="By clicking \"Agree,\" and each time I interact with this AI agent, I consent to the recording, storage, and sharing of my communications with third-party service providers, and as otherwise described in our Terms of Service."
               consent-storage-key="vapi_widget_consent"
             ></vapi-widget>
           </div>
