@@ -196,7 +196,6 @@ const HospitalityCoach = () => {
               cta-button-text-color="#ffffff"
               border-radius="large"
               size="full"
-              position="top-left"
               title="TALK WITH AI"
               start-button-text="Start"
               end-button-text="End Call"
