@@ -186,7 +186,7 @@ const HospitalityCoach = () => {
         
         
         <div className="flex justify-start pl-0">
-            <div style={{ position: 'fixed', top: '100px', left: '100px' }}>
+            <div>
               <vapi-widget              public-key="20234fe3-f02a-4cd7-9cf3-addcf5935775"
               assistant-id="5fe73bc9-a36a-4bdc-b6d2-e84bc3874497"
               mode="voice"
@@ -197,6 +197,7 @@ const HospitalityCoach = () => {
               cta-button-text-color="#ffffff"
               border-radius="large"
               size="full"
+              position="bottom-right"
               title="TALK WITH AI"
               start-button-text="Start"
               end-button-text="End Call"
