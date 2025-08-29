@@ -113,73 +113,9 @@ const Landing = () => {
               </CardContent>
             </Card>
 
-            {/* Inbound */}
-            <Card className="group hover-lift hover-glow bg-gradient-card border-card-border shadow-soft animate-scale-in" style={{ animationDelay: '0.1s' }}>
-              <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <Phone className="w-8 h-8 text-primary-foreground" />
-                </div>
-                <CardTitle className="text-2xl text-primary">Inbound</CardTitle>
-                <CardDescription className="text-base">
-                  Handle incoming calls with AI sales expertise
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">24/7 professional call handling</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">Advanced objection handling</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">CRM integration & follow-up</span>
-                  </li>
-                </ul>
-                <Link to="/register" className="w-full block">
-                  <Button className="w-full" variant="primary">
-                    Test Inbound Agent
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+            
 
-            {/* Dead Lead Reactivation */}
-            <Card className="group hover-lift hover-glow bg-gradient-card border-card-border shadow-soft animate-scale-in" style={{ animationDelay: '0.2s' }}>
-              <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 bg-gradient-accent rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                  <Target className="w-8 h-8 text-primary-foreground" />
-                </div>
-                <CardTitle className="text-2xl text-primary">Dead Lead Reactivation</CardTitle>
-                <CardDescription className="text-base">
-                  Revive and re-engage dormant leads effectively
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">Personalized reactivation campaigns</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">Intelligent timing optimization</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">High conversion recovery rates</span>
-                  </li>
-                </ul>
-                <Link to="/register" className="w-full block">
-                  <Button className="w-full" variant="primary">
-                    Test Reactivation
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+            
           </div>
         </div>
       </section>
