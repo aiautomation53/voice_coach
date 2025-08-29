@@ -35,7 +35,7 @@ const InboundTest = () => {
 
     fetchUser();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
+    const { data: { subscription: authListener } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === 'SIGNED_IN' && session?.user) {
           setUser({ name: session.user.user_metadata?.full_name || session.user.email, email: session.user.email });
