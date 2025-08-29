@@ -105,7 +105,7 @@ const Landing = () => {
                 ></vapi-widget>
                 <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
                 
-                <Link to="/hospitality-coach" className="w-full block">
+                <Link to="/test/hospitality-coach" className="w-full block">
                   <Button className="w-full" variant="primary">
                     Test Hospitality Coach
                   </Button>
