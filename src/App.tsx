@@ -12,6 +12,7 @@ import HospitalityCoach from "./pages/HospitalityCoach";
 import InboundTest from "./pages/InboundTest";
 import DeadLeadReactivationTest from "./pages/DeadLeadReactivationTest";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +28,7 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/test/hospitality-coach" element={<HospitalityCoach />} />
+          <Route path="/test/hospitality-coach" element={<ProtectedRoute><HospitalityCoach /></ProtectedRoute>} />
           <Route path="/test/inbound" element={<InboundTest />} />
           <Route path="/test/dead-lead-reactivation" element={<DeadLeadReactivationTest />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
