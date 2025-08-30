@@ -21,16 +21,8 @@ const Landing = () => {
               Experience the power of AI-driven sales automation. Test three specialized voice agents designed to convert, engage, and reactivate your leads with human-like conversations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/register">
-                <Button variant="hero" size="xl" className="shadow-glow">
-                  Start Testing Free <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-              <Link to="/login">
-                <Button variant="outline" size="xl" className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20">
-                  Login to Dashboard
-                </Button>
-              </Link>
+              
+              
             </div>
           </div>
         </div>
