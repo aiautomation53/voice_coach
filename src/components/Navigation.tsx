@@ -18,7 +18,7 @@ const Navigation = ({ isAuthenticated = false, user, onLogout }: NavigationProps
             <div className="p-2 bg-gradient-accent rounded-xl shadow-soft">
               <Bot className="w-6 h-6 text-primary-foreground" />
             </div>
-            AI Voice Tester
+            Voice Coach
           </Link>
 
           {/* Navigation */}
