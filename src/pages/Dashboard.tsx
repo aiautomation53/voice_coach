@@ -71,36 +71,8 @@ const Dashboard = () => {
       color: "from-accent to-accent-light",
       testUrl: "/test/hospitality-coach"
     },
-    {
-      id: "real-estate-coach",
-      title: "Real Estate Coach",
-      description: "Practice real estate sales scenarios with AI voice training.",
-      features: [
-        "Realistic real estate scenarios",
-        "Voice-based interaction training",
-        "Sales negotiation skill development",
-        "Instant feedback and coaching"
-      ],
-      scenario: "Ideal for real estate agents looking to refine their sales pitch and client interaction skills.",
-      icon: Phone, // Using Phone icon for now, can be changed later
-      color: "from-primary to-primary-light",
-      testUrl: "/test/real-estate-coach"
-    },
-    {
-      id: "insurance-coach",
-      title: "Insurance Coach",
-      description: "Practice insurance sales scenarios with AI voice training.",
-      features: [
-        "Realistic insurance scenarios",
-        "Voice-based interaction training",
-        "Policy explanation and sales skills",
-        "Instant feedback and coaching"
-      ],
-      scenario: "Great for insurance agents to practice explaining complex policies and handling client objections.",
-      icon: Target, // Using Target icon for now, can be changed later
-      color: "from-accent-light to-primary-lighter",
-      testUrl: "/test/insurance-coach"
-    }
+    
+    
   ];
 
   if (!user) {
