@@ -65,7 +65,7 @@ const MissingDocuments = () => {
 
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      const response = await fetch('/api/webhook/search-trade', {
+      const response = await fetch('/api/webhook/search-trade/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tradeId: numericTradeId }),
@@ -111,7 +111,7 @@ const MissingDocuments = () => {
       delete dataToSend.missingDocuments;
       dataToSend['Trade ID'] = parseInt(dataToSend['Trade ID'], 10);
 
-      const response = await fetch('/api/webhook/9238431c-e75e-46c8-930a-85c03a326cb4', {
+      const response = await fetch('/api/webhook/9238431c-e75e-46c8-930a-85c03a326cb4/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify([dataToSend]),
