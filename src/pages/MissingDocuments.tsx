@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const formFields = [
-  { key: 'missingDocuments', label: 'Comma-Separated List Of Missing Documents', readOnly: false, isTextArea: false },
+  { key: 'missingDocuments', label: 'Comma-Separated List Of Missing Documents', readOnly: false, isTextArea: true },
   { key: 'Property Address', label: 'Address Of The Property', readOnly: false, isTextArea: false },
   { key: 'Trade ID', label: 'Unique Trade Identifier', readOnly: false, isTextArea: false },
   { key: 'Agent Name', label: 'Name Of The Agent Handling The Property', readOnly: false, isTextArea: false },
