@@ -1,8 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://n8n.srv856353.hstgr.cloud/$1"
+      "source": "/api/webhook/search-trade",
+      "destination": "https://n8n.srv856353.hstgr.cloud/webhook/search-trade"
+    },
+    {
+      "source": "/api/webhook/9238431c-e75e-46c8-930a-85c03a326cb4",
+      "destination": "https://n8n.srv856353.hstgr.cloud/webhook/9238431c-e75e-46c8-930a-85c03a326cb4"
     },
     {
       "source": "/(.*)",
