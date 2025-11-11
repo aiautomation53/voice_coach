@@ -20,7 +20,7 @@ const formFields = [
   { key: 'Last Contacted Date (if any)', label: 'Date The Agent Was Last Contacted, If Available', readOnly: false, isTextArea: false },
 ];
 
-const problematicKey = `Missing Documents Separated with Comas '" , "`;
+const problematicKey = `Missing Documents Separated with Comas ', "'`;
 
 const MissingDocuments = () => {
   const { toast } = useToast();
