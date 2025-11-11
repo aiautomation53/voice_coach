@@ -137,6 +137,14 @@ const MissingDocuments = () => {
 
       dataToSend['Trade ID'] = parseInt(dataToSend['Trade ID'], 10);
 
+      const phoneNumberKey = 'Agent Number (+) with country code extension';
+      let phoneNumber = dataToSend[phoneNumberKey];
+
+      if (phoneNumber && typeof phoneNumber === 'string' && !phoneNumber.startsWith('+')) {
+        phoneNumber = `+${phoneNumber}`;
+      }
+      dataToSend[phoneNumberKey] = phoneNumber;
+
       const response = await fetch('/api/webhook/9238431c-e75e-46c8-930a-85c03a326cb4', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
