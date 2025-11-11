@@ -1,73 +1,76 @@
-# Welcome to your Lovable project
+bash
+    git clone https://github.com/your-username/voice-coach.git
+    cd voice-coach
+    ```
 
-## Project info
+2.  **Frontend Setup:**
+    ```bash
+    cd frontend
+    npm install # or yarn
+    npm run dev # to start the development server
+    ```
+    The frontend should now be running at `http://localhost:5173`.
 
-**URL**: https://lovable.dev/projects/94dd2422-a58b-462c-93be-2e78e19e9368
+3.  **Backend Setup:**
+    ```bash
+    cd backend
+    npm install # or yarn
+    npm run dev # to start the backend server
+    ```
+    The backend should now be running at `http://localhost:3000`.
 
-## How can I edit this code?
+4.  **Database Setup (using Docker):**
+    Ensure Docker is running, then from the project root:
+    ```bash
+    docker-compose up -d postgres
+    ```
+    Run Prisma migrations:
+    ```bash
+    cd backend
+    npx prisma migrate dev --name init
+    ```
 
-There are several ways of editing your application.
+### Configuration
 
-**Use Lovable**
+Environment variables are managed using `.env` files. Check `backend/.env.example` and `frontend/.env.example` for required variables.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/94dd2422-a58b-462c-93be-2e78e19e9368) and start prompting.
+## Usage
 
-Changes made via Lovable will be committed automatically to this repo.
+Once both frontend and backend servers are running:
 
-**Use your preferred IDE**
+1.  Open your browser to `http://localhost:5173`.
+2.  Grant microphone access when prompted.
+3.  Start practicing and receive real-time feedback!
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Project Structure
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/94dd2422-a58b-462c-93be-2e78e19e9368) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+voice-coach/
+├── frontend/             # React/TypeScript application
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── App.tsx
+│   ├── vite.config.ts
+│   └── package.json
+├── backend/              # Node.js/Express server
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── models/       # Prisma schema and generated client
+│   │   └── app.ts
+│   ├── prisma/
+│   ├── .env.example
+│   └── package.json
+├── python_ml_service/    # (Optional) Python Flask/FastAPI for ML tasks
+│   ├── src/
+│   ├── Dockerfile
+│   └── requirements.txt
+├── docker-compose.yml    # Docker setup for database, etc.
+├── .gitignore
+├── README.md             # This file
+└── package.json          # Monorepo root (if applicable, or for general scripts)

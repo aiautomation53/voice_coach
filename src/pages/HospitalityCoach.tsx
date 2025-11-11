@@ -1,11 +1,3 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import Navigation from "@/components/Navigation";
-import { ArrowLeft, Headphones, Play, MessageSquare, Phone } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";

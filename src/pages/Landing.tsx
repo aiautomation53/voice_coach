@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import { Bot, Headphones, Phone, Target, ArrowRight, CheckCircle, Star } from "lucide-react";
+import { Bot, Headphones, Phone, Target, ArrowRight, CheckCircle, Star, FileX2 } from "lucide-react";
 
 const Landing = () => {
   return (
@@ -18,7 +18,7 @@ const Landing = () => {
               <span className="bg-gradient-to-r from-accent-light to-accent bg-clip-text text-transparent"> Platform</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-primary-foreground/90 max-w-3xl mx-auto leading-relaxed">
-              Experience the power of AI-driven sales automation. Test three specialized voice agents designed to convert, engage, and reactivate your leads with human-like conversations.
+              Experience the power of AI-driven sales automation. Test two specialized voice agents designed to convert, engage, and reactivate your leads with human-like conversations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               
@@ -39,14 +39,14 @@ const Landing = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-slide-up">
             <h2 className="text-3xl md:text-5xl font-bold mb-6 text-primary">
-              Three Powerful AI Agents
+              Two Powerful AI Agents
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Each agent is specialized for different stages of your sales funnel, powered by advanced AI technology.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {/* Hospitality Coach */}
             <Card className="group hover-lift hover-glow bg-gradient-card border-card-border shadow-soft animate-scale-in">
               <CardHeader className="text-center pb-4">
@@ -105,9 +105,39 @@ const Landing = () => {
               </CardContent>
             </Card>
 
-            
-
-            
+            {/* Missing Documents */}
+            <Card className="group hover-lift hover-glow bg-gradient-card border-card-border shadow-soft animate-scale-in" style={{ animationDelay: '0.2s' }}>
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-400 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <FileX2 className="w-8 h-8 text-primary-foreground" />
+                </div>
+                <CardTitle className="text-2xl text-primary">Missing Documents</CardTitle>
+                <CardDescription className="text-base">
+                  Identify and request missing documents
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">Automated client communication</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">Document tracking and status updates</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-success mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">Reduced administrative overhead</span>
+                  </li>
+                </ul>
+                <Link to="/test/missing-documents" className="w-full block">
+                  <Button className="w-full" variant="primary">
+                    Test Missing Documents
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>

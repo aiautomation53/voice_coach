@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import { Headphones, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clock } from "lucide-react";
+import { Headphones, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clock, FileX2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const Dashboard = () => {
@@ -70,6 +70,21 @@ const Dashboard = () => {
       icon: Headphones,
       color: "from-accent to-accent-light",
       testUrl: "/test/hospitality-coach"
+    },
+    {
+      id: "missing-documents",
+      title: "Missing Documents",
+      description: "Identify and request missing documents from clients.",
+      features: [
+        "Automated document collection",
+        "Client communication templates",
+        "Document tracking and status updates",
+        "Secure document upload portal"
+      ],
+      scenario: "Ideal for onboarding new clients and ensuring all required paperwork is collected efficiently.",
+      icon: FileX2,
+      color: "from-blue-500 to-blue-400",
+      testUrl: "/test/missing-documents"
     },
     
     

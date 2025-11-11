@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import HospitalityCoach from "./pages/HospitalityCoach";
 import InboundTest from "./pages/InboundTest";
 import DeadLeadReactivationTest from "./pages/DeadLeadReactivationTest";
+import MissingDocuments from "./pages/MissingDocuments";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/test/hospitality-coach" element={<ProtectedRoute><HospitalityCoach /></ProtectedRoute>} />
           <Route path="/test/inbound" element={<InboundTest />} />
           <Route path="/test/dead-lead-reactivation" element={<DeadLeadReactivationTest />} />
+          <Route path="/test/missing-documents" element={<ProtectedRoute><MissingDocuments /></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
