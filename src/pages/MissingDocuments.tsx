@@ -48,10 +48,6 @@ const MissingDocuments = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  useEffect(() => {
-    console.log("tradeData state updated:", tradeData);
-  }, [tradeData]);
-
   const handleSearch = async () => {
     if (!tradeId) {
       toast({ title: "Validation Error", description: "Please enter a Trade ID.", variant: "destructive" });
@@ -90,16 +86,32 @@ const MissingDocuments = () => {
       const result = JSON.parse(responseBody);
       if (result.found && result.data) {
         const receivedData = result.data;
-        const keyForMissingDocs = Object.keys(receivedData).find(k => k.toLowerCase().includes('missing documents'));
+        const normalizedData = {};
 
-        const newData = { ...receivedData };
+        const formKeyMap = {};
+        formFields.forEach(field => {
+            formKeyMap[field.key.toLowerCase()] = field.key;
+        });
 
-        if (keyForMissingDocs) {
-            setOriginalMissingDocsKey(keyForMissingDocs);
-            newData.missingDocuments = receivedData[keyForMissingDocs];
+        for (const originalKey in receivedData) {
+            const normalizedOriginalKey = originalKey.toLowerCase().trim();
+            let matchingFormKey = formKeyMap[normalizedOriginalKey];
+
+            if (!matchingFormKey && normalizedOriginalKey.includes('missing documents')) {
+                matchingFormKey = 'missingDocuments';
+            }
+
+            if (matchingFormKey) {
+                normalizedData[matchingFormKey] = receivedData[originalKey];
+                if (matchingFormKey === 'missingDocuments') {
+                    setOriginalMissingDocsKey(originalKey);
+                }
+            } else {
+                normalizedData[originalKey] = receivedData[originalKey];
+            }
         }
 
-        setTradeData(newData);
+        setTradeData(normalizedData);
         toast({ title: "Trade Found", description: "The trade data has been loaded successfully." });
       } else {
         toast({ title: "Trade Not Found", description: "The specified trade ID could not be found.", variant: "destructive" });
@@ -175,65 +187,57 @@ const MissingDocuments = () => {
               </div>
             )}
             {tradeData && (
-              <>
-                <div className="mt-4 p-4 bg-gray-200 rounded-lg">
-                  <h3 className="text-lg font-bold mb-2">Debug: tradeData State</h3>
-                  <pre className="text-sm bg-white p-2 rounded">
-                    {JSON.stringify(tradeData, null, 2)}
-                  </pre>
-                </div>
-                <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-                  <h3 className="text-lg font-bold mb-4">Trade Data</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {formFields.map((field) => (
-                      <div
-                        key={field.key}
-                        className={`flex flex-col ${
-                          field.isTextArea ? "md:col-span-2" : ""
-                        } ${
-                          field.key === 'missingDocuments'
-                            ? "bg-red-100 p-2 rounded-lg"
-                            : ""
-                        }`}
+              <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+                <h3 className="text-lg font-bold mb-4">Trade Data</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {formFields.map((field) => (
+                    <div
+                      key={field.key}
+                      className={`flex flex-col ${
+                        field.isTextArea ? "md:col-span-2" : ""
+                      } ${
+                        field.key === 'missingDocuments'
+                          ? "bg-red-100 p-2 rounded-lg"
+                          : ""
+                      }`}
+                    >
+                      <label
+                        htmlFor={field.key}
+                        className="text-sm font-medium text-gray-700 mb-1"
                       >
-                        <label
-                          htmlFor={field.key}
-                          className="text-sm font-medium text-gray-700 mb-1"
-                        >
-                          {field.label}
-                        </label>
-                        {field.isTextArea ? (
-                          <Textarea
-                            id={field.key}
-                            name={field.key}
-                            value={tradeData[field.key] ?? ""}
-                            onChange={handleInputChange}
-                            readOnly={field.readOnly || isLoading}
-                            className="bg-white rounded-md p-2"
-                            rows={4}
-                          />
-                        ) : (
-                          <Input
-                            id={field.key}
-                            name={field.key}
-                            value={tradeData[field.key] ?? ""}
-                            onChange={handleInputChange}
-                            readOnly={field.readOnly || isLoading}
-                            className="bg-white rounded-md p-2"
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <Button
-                    onClick={handleSaveChanges}
-                    disabled={isLoading}
-                    className="mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
-                  >
-                    {isLoading ? "Saving..." : "Save Changes"}
-                  </Button>
+                        {field.label}
+                      </label>
+                      {field.isTextArea ? (
+                        <Textarea
+                          id={field.key}
+                          name={field.key}
+                          value={tradeData[field.key] ?? ""}
+                          onChange={handleInputChange}
+                          readOnly={field.readOnly || isLoading}
+                          className="bg-white rounded-md p-2"
+                          rows={4}
+                        />
+                      ) : (
+                        <Input
+                          id={field.key}
+                          name={field.key}
+                          value={tradeData[field.key] ?? ""}
+                          onChange={handleInputChange}
+                          readOnly={field.readOnly || isLoading}
+                          className="bg-white rounded-md p-2"
+                        />
+                      )}
+                    </div>
+                  ))}
                 </div>
-              </>
+                <Button
+                  onClick={handleSaveChanges}
+                  disabled={isLoading}
+                  className="mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
+                >
+                  {isLoading ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
             )}
           </div>
         </div>
