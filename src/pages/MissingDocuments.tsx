@@ -93,9 +93,6 @@ const MissingDocuments = () => {
         if (keyForMissingDocs) {
             setOriginalMissingDocsKey(keyForMissingDocs);
             newData.missingDocuments = receivedData[keyForMissingDocs];
-            if (keyForMissingDocs !== 'missingDocuments') {
-                delete newData[keyForMissingDocs];
-            }
         }
 
         setTradeData(newData);
