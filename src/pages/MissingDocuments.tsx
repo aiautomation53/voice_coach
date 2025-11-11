@@ -48,6 +48,10 @@ const MissingDocuments = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    console.log("tradeData state updated:", tradeData);
+  }, [tradeData]);
+
   const handleSearch = async () => {
     if (!tradeId) {
       toast({ title: "Validation Error", description: "Please enter a Trade ID.", variant: "destructive" });
@@ -171,57 +175,65 @@ const MissingDocuments = () => {
               </div>
             )}
             {tradeData && (
-              <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-                <h3 className="text-lg font-bold mb-4">Trade Data</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {formFields.map((field) => (
-                    <div
-                      key={field.key}
-                      className={`flex flex-col ${
-                        field.isTextArea ? "md:col-span-2" : ""
-                      } ${
-                        field.key === 'missingDocuments'
-                          ? "bg-red-100 p-2 rounded-lg"
-                          : ""
-                      }`}
-                    >
-                      <label
-                        htmlFor={field.key}
-                        className="text-sm font-medium text-gray-700 mb-1"
-                      >
-                        {field.label}
-                      </label>
-                      {field.isTextArea ? (
-                        <Textarea
-                          id={field.key}
-                          name={field.key}
-                          value={tradeData[field.key] ?? ""}
-                          onChange={handleInputChange}
-                          readOnly={field.readOnly || isLoading}
-                          className="bg-white rounded-md p-2"
-                          rows={4}
-                        />
-                      ) : (
-                        <Input
-                          id={field.key}
-                          name={field.key}
-                          value={tradeData[field.key] ?? ""}
-                          onChange={handleInputChange}
-                          readOnly={field.readOnly || isLoading}
-                          className="bg-white rounded-md p-2"
-                        />
-                      )}
-                    </div>
-                  ))}
+              <>
+                <div className="mt-4 p-4 bg-gray-200 rounded-lg">
+                  <h3 className="text-lg font-bold mb-2">Debug: tradeData State</h3>
+                  <pre className="text-sm bg-white p-2 rounded">
+                    {JSON.stringify(tradeData, null, 2)}
+                  </pre>
                 </div>
-                <Button
-                  onClick={handleSaveChanges}
-                  disabled={isLoading}
-                  className="mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
-                >
-                  {isLoading ? "Saving..." : "Save Changes"}
-                </Button>
-              </div>
+                <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+                  <h3 className="text-lg font-bold mb-4">Trade Data</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {formFields.map((field) => (
+                      <div
+                        key={field.key}
+                        className={`flex flex-col ${
+                          field.isTextArea ? "md:col-span-2" : ""
+                        } ${
+                          field.key === 'missingDocuments'
+                            ? "bg-red-100 p-2 rounded-lg"
+                            : ""
+                        }`}
+                      >
+                        <label
+                          htmlFor={field.key}
+                          className="text-sm font-medium text-gray-700 mb-1"
+                        >
+                          {field.label}
+                        </label>
+                        {field.isTextArea ? (
+                          <Textarea
+                            id={field.key}
+                            name={field.key}
+                            value={tradeData[field.key] ?? ""}
+                            onChange={handleInputChange}
+                            readOnly={field.readOnly || isLoading}
+                            className="bg-white rounded-md p-2"
+                            rows={4}
+                          />
+                        ) : (
+                          <Input
+                            id={field.key}
+                            name={field.key}
+                            value={tradeData[field.key] ?? ""}
+                            onChange={handleInputChange}
+                            readOnly={field.readOnly || isLoading}
+                            className="bg-white rounded-md p-2"
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <Button
+                    onClick={handleSaveChanges}
+                    disabled={isLoading}
+                    className="mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
+                  >
+                    {isLoading ? "Saving..." : "Save Changes"}
+                  </Button>
+                </div>
+              </>
             )}
           </div>
         </div>
