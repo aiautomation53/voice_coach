@@ -257,7 +257,7 @@ const MissingDocuments = () => {
             </CardContent>
           </Card>
           <Card>
-            <CardHeader><CardTitle>{action ? (action === 'add' ? 'Add Record' : 'Update Record') : 'Choose an Action'}</CardTitle></Header>
+            <CardHeader><CardTitle>{action ? (action === 'add' ? 'Add Record' : 'Update Record') : 'Choose an Action'}</CardTitle></CardHeader>
             <CardContent className="min-h-[200px] flex items-center justify-center">{renderForm()}</CardContent>
           </Card>
         </div>
