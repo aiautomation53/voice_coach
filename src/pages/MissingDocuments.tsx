@@ -20,8 +20,6 @@ const formFields = [
   { key: 'Last Contacted Date (if any)', label: 'Date The Agent Was Last Contacted, If Available', readOnly: false, isTextArea: false },
 ];
 
-const problematicKey = `Missing Documents Separated with Comas ', "'`;
-
 const MissingDocuments = () => {
   const { toast } = useToast();
   const [user, setUser] = useState<any>(null);
@@ -30,6 +28,7 @@ const MissingDocuments = () => {
   const [tradeId, setTradeId] = useState("");
   const [tradeData, setTradeData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [originalMissingDocsKey, setOriginalMissingDocsKey] = useState<string>('');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -86,10 +85,20 @@ const MissingDocuments = () => {
 
       const result = JSON.parse(responseBody);
       if (result.found && result.data) {
-        const data = result.data;
-        data.missingDocuments = data[problematicKey];
-        delete data[problematicKey];
-        setTradeData(data);
+        const receivedData = result.data;
+        const keyForMissingDocs = Object.keys(receivedData).find(k => k.toLowerCase().includes('missing documents'));
+
+        const newData = { ...receivedData };
+
+        if (keyForMissingDocs) {
+            setOriginalMissingDocsKey(keyForMissingDocs);
+            newData.missingDocuments = receivedData[keyForMissingDocs];
+            if (keyForMissingDocs !== 'missingDocuments') {
+                delete newData[keyForMissingDocs];
+            }
+        }
+
+        setTradeData(newData);
         toast({ title: "Trade Found", description: "The trade data has been loaded successfully." });
       } else {
         toast({ title: "Trade Not Found", description: "The specified trade ID could not be found.", variant: "destructive" });
@@ -107,8 +116,12 @@ const MissingDocuments = () => {
     setIsLoading(true);
     try {
       const dataToSend = { ...tradeData };
-      dataToSend[problematicKey] = dataToSend.missingDocuments;
-      delete dataToSend.missingDocuments;
+
+      if (originalMissingDocsKey && originalMissingDocsKey !== 'missingDocuments') {
+        dataToSend[originalMissingDocsKey] = dataToSend.missingDocuments;
+        delete dataToSend.missingDocuments;
+      }
+
       dataToSend['Trade ID'] = parseInt(dataToSend['Trade ID'], 10);
 
       const response = await fetch('/api/webhook/9238431c-e75e-46c8-930a-85c03a326cb4', {
@@ -247,7 +260,7 @@ const MissingDocuments = () => {
             </CardContent>
           </Card>
           <Card>
-            <CardHeader><CardTitle>{action ? (action === 'add' ? 'Add Record' : 'Update Record') : 'Choose an Action'}</CardTitle></CardHeader>
+            <CardHeader><CardTitle>{action ? (action === 'add' ? 'Add Record' : 'Update Record') : 'Choose an Action'}</CardTitle></Header>
             <CardContent className="min-h-[200px] flex items-center justify-center">{renderForm()}</CardContent>
           </Card>
         </div>
