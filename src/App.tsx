@@ -12,8 +12,11 @@ import HospitalityCoach from "./pages/HospitalityCoach";
 import InboundTest from "./pages/InboundTest";
 import DeadLeadReactivationTest from "./pages/DeadLeadReactivationTest";
 import MissingDocuments from "./pages/MissingDocuments";
+import RagChatbotTest from "./pages/test/RagChatbotTest";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminRoute from "./components/AdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -29,10 +32,12 @@ const App = () => (
           <Route path="/register" element={<Register />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/test/hospitality-coach" element={<ProtectedRoute><HospitalityCoach /></ProtectedRoute>} />
           <Route path="/test/inbound" element={<InboundTest />} />
           <Route path="/test/dead-lead-reactivation" element={<DeadLeadReactivationTest />} />
           <Route path="/test/missing-documents" element={<ProtectedRoute><MissingDocuments /></ProtectedRoute>} />
+          <Route path="/test/rag-chatbot" element={<ProtectedRoute><RagChatbotTest /></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

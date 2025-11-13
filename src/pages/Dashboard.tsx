@@ -3,33 +3,132 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import { Headphones, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clock, FileX2 } from "lucide-react";
+import { Headphones, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clock, FileX2, MessageSquare } from "lucide-react";
 import { useState, useEffect } from "react";
+
+const allAgents = [
+  {
+    id: "hospitality-coach",
+    title: "Hospitality Coach",
+    description: "Practice hospitality customer service scenarios with AI voice training.",
+    features: [
+      "Realistic hospitality scenarios",
+      "Voice-based interaction training",
+      "Customer service skill development",
+      "Instant feedback and coaching"
+    ],
+    scenario: "Perfect for training hotel staff in customer service excellence and handling various guest situations.",
+    icon: Headphones,
+    color: "from-accent to-accent-light",
+    testUrl: "/test/hospitality-coach",
+    productId: "", // This will be fetched
+  },
+  {
+    id: "missing-documents",
+    title: "Missing Documents",
+    description: "Identify and request missing documents from clients.",
+    features: [
+      "Automated document collection",
+      "Client communication templates",
+      "Document tracking and status updates",
+      "Secure document upload portal"
+    ],
+    scenario: "Ideal for onboarding new clients and ensuring all required paperwork is collected efficiently.",
+    icon: FileX2,
+    color: "from-blue-500 to-blue-400",
+    testUrl: "/test/missing-documents",
+    productId: "", // This will be fetched
+  },
+  {
+    id: "rag-chatbot",
+    title: "RAG Chatbot",
+    description: "Engage in intelligent conversations with a RAG-powered chatbot.",
+    features: [
+      "Natural language understanding",
+      "Context-aware responses",
+      "Answers questions from a knowledge base",
+      "Scalable and customizable"
+    ],
+    scenario: "Perfect for providing instant support, answering FAQs, and engaging users with dynamic content.",
+    icon: MessageSquare,
+    color: "from-green-500 to-green-400",
+    testUrl: "/test/rag-chatbot",
+    productId: "", // This will be fetched
+  }
+];
 
 const Dashboard = () => {
   const [user, setUser] = useState<any>(null);
+  const [availableAgents, setAvailableAgents] = useState<any[]>([]);
+  const [allUsers, setAllUsers] = useState<any[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getSession = async () => {
+    const getSessionAndPermissions = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error("Error getting session:", error.message);
+      if (error || !session) {
+        console.error("Error getting session:", error?.message);
         navigate("/login");
-      } else if (session) {
-        setUser(session.user);
+        return;
+      }
+      setUser(session.user);
+
+      const { data: userRoles, error: roleError } = await supabase
+        .from('user_roles')
+        .select('roles(name)')
+        .eq('user_id', session.user.id);
+
+      let isAdminUser = false;
+      if (roleError) {
+        console.error("Error fetching user roles:", roleError.message);
       } else {
-        navigate("/login");
+        isAdminUser = userRoles.some((r: any) => r.roles && r.roles.name === 'admin');
+        setIsAdmin(isAdminUser);
+      }
+
+      if (isAdminUser) {
+        const { data: users, error: usersError } = await supabase.rpc('get_all_users');
+        if (usersError) {
+            console.error("Error fetching all users:", usersError.message);
+        } else {
+            setAllUsers(users);
+        }
+      }
+
+      const { data: products, error: productsError } = await supabase.from('products').select('id, name');
+      if (productsError) {
+        console.error("Error fetching products:", productsError.message);
+        return;
+      }
+
+      const agentsWithProductIds = allAgents.map(agent => ({
+        ...agent,
+        productId: products.find(p => p.name === agent.title)?.id || ''
+      }));
+
+      if (isAdminUser) {
+        setAvailableAgents(agentsWithProductIds);
+      } else {
+        const { data: permissions, error: permissionsError } = await supabase
+          .from('user_product_permissions')
+          .select('product_id')
+          .eq('user_id', session.user.id);
+
+        if (permissionsError) {
+          console.error("Error fetching user permissions:", permissionsError.message);
+        } else {
+          const allowedProductIds = new Set(permissions.map(p => p.product_id));
+          const filteredAgents = agentsWithProductIds.filter(agent => allowedProductIds.has(agent.productId));
+          setAvailableAgents(filteredAgents);
+        }
       }
     };
 
-    getSession();
+    getSessionAndPermissions();
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        setUser(session.user);
-      } else {
-        setUser(null);
+      if (!session) {
         navigate("/login");
       }
     });
@@ -51,43 +150,8 @@ const Dashboard = () => {
   const stats = [
     { label: "Tests Completed", value: "12", icon: Activity, color: "text-accent" },
     { label: "Success Rate", value: "87%", icon: TrendingUp, color: "text-success" },
-    { label: "Active Agents", value: "3", icon: Users, color: "text-primary" },
+    { label: "Active Agents", value: availableAgents.length, icon: Users, color: "text-primary" },
     { label: "Total Sessions", value: "45m", icon: Clock, color: "text-muted-foreground" },
-  ];
-
-  const agents = [
-    {
-      id: "hospitality-coach",
-      title: "Hospitality Coach",
-      description: "Practice hospitality customer service scenarios with AI voice training.",
-      features: [
-        "Realistic hospitality scenarios",
-        "Voice-based interaction training",
-        "Customer service skill development",
-        "Instant feedback and coaching"
-      ],
-      scenario: "Perfect for training hotel staff in customer service excellence and handling various guest situations.",
-      icon: Headphones,
-      color: "from-accent to-accent-light",
-      testUrl: "/test/hospitality-coach"
-    },
-    {
-      id: "missing-documents",
-      title: "Missing Documents",
-      description: "Identify and request missing documents from clients.",
-      features: [
-        "Automated document collection",
-        "Client communication templates",
-        "Document tracking and status updates",
-        "Secure document upload portal"
-      ],
-      scenario: "Ideal for onboarding new clients and ensuring all required paperwork is collected efficiently.",
-      icon: FileX2,
-      color: "from-blue-500 to-blue-400",
-      testUrl: "/test/missing-documents"
-    },
-    
-    
   ];
 
   if (!user) {
@@ -103,7 +167,6 @@ const Dashboard = () => {
       />
       
       <div className="container mx-auto px-4 py-8">
-        {/* Welcome Header */}
         <div className="mb-8 animate-fade-in">
           <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">
             Welcome back, {user.user_metadata?.full_name || user.email}!
@@ -113,7 +176,6 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {stats.map((stat, index) => (
             <Card key={stat.label} className="bg-gradient-card border-card-border hover-lift animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -130,59 +192,79 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Agent Testing Cards */}
         <div className="space-y-6">
           <h2 className="text-2xl font-bold text-primary mb-6">AI Agent Testing Suite</h2>
           
-          {agents.map((agent, index) => (
-            <Card key={agent.id} className="bg-gradient-card border-card-border hover-lift hover-glow shadow-soft animate-slide-up" style={{ animationDelay: `${index * 0.2}s` }}>
-              <CardContent className="p-8">
-                <div className="grid lg:grid-cols-2 gap-8 items-center">
-                  {/* Agent Info */}
-                  <div>
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${agent.color} flex items-center justify-center shadow-medium`}>
-                        <agent.icon className="w-8 h-8 text-primary-foreground" />
+          {availableAgents.length > 0 ? (
+            availableAgents.map((agent, index) => (
+              <Card key={agent.id} className="bg-gradient-card border-card-border hover-lift hover-glow shadow-soft animate-slide-up" style={{ animationDelay: `${index * 0.2}s` }}>
+                <CardContent className="p-8">
+                  <div className="grid lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${agent.color} flex items-center justify-center shadow-medium`}>
+                          <agent.icon className="w-8 h-8 text-primary-foreground" />
+                        </div>
+                        <div>
+                          <h3 className="text-2xl font-bold text-primary">{agent.title}</h3>
+                          <p className="text-muted-foreground">{agent.description}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-primary">{agent.title}</h3>
-                        <p className="text-muted-foreground">{agent.description}</p>
+                      <div className="mb-6 p-4 bg-secondary/50 rounded-lg border border-card-border">
+                        <h4 className="font-semibold text-primary mb-2">Use Case Scenario:</h4>
+                        <p className="text-sm text-muted-foreground">{agent.scenario}</p>
                       </div>
+                      <Link to={agent.testUrl}>
+                        <Button variant="hero" size="lg" className="w-full sm:w-auto">
+                          Test This Agent <ArrowRight className="ml-2 w-5 h-5" />
+                        </Button>
+                      </Link>
                     </div>
-
-                    {/* Scenario */}
-                    <div className="mb-6 p-4 bg-secondary/50 rounded-lg border border-card-border">
-                      <h4 className="font-semibold text-primary mb-2">Use Case Scenario:</h4>
-                      <p className="text-sm text-muted-foreground">{agent.scenario}</p>
+                    <div>
+                      <h4 className="font-semibold text-primary mb-4">Key Features:</h4>
+                      <ul className="space-y-3">
+                        {agent.features.map((feature, featureIndex) => (
+                          <li key={featureIndex} className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-sm text-muted-foreground">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-
-                    {/* Test Button */}
-                    <Link to={agent.testUrl}>
-                      <Button variant="hero" size="lg" className="w-full sm:w-auto">
-                        Test This Agent <ArrowRight className="ml-2 w-5 h-5" />
-                      </Button>
-                    </Link>
                   </div>
-
-                  {/* Features List */}
-                  <div>
-                    <h4 className="font-semibold text-primary mb-4">Key Features:</h4>
-                    <ul className="space-y-3">
-                      {agent.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                          <span className="text-sm text-muted-foreground">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <Card className="bg-gradient-card border-card-border">
+              <CardContent className="p-8 text-center">
+                <p className="text-muted-foreground">No AI agents have been assigned to you yet. Please contact an administrator.</p>
               </CardContent>
             </Card>
-          ))}
+          )}
         </div>
 
-        {/* Quick Tips */}
+        {isAdmin && (
+            <div className="mt-8">
+                <h2 className="text-2xl font-bold text-primary mb-6">User Management</h2>
+                <Card className="bg-gradient-card border-card-border animate-fade-in">
+                    <CardHeader>
+                        <CardTitle className="text-primary">Application Users</CardTitle>
+                        <CardDescription>All registered users in the application.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-2 max-h-60 overflow-y-auto">
+                            {allUsers.length > 0 ? allUsers.map(appUser => (
+                                <div key={appUser.id} className="p-3 flex justify-between items-center bg-secondary/50 rounded-lg border border-card-border">
+                                    <p className="text-sm text-muted-foreground">{appUser.email}</p>
+                                </div>
+                            )) : <p className="text-sm text-muted-foreground">No users found.</p>}
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        )}
+
         <Card className="mt-8 bg-gradient-to-r from-primary/5 to-accent/5 border-accent/20 animate-fade-in">
           <CardHeader>
             <CardTitle className="text-primary">Testing Tips</CardTitle>

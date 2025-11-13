@@ -1,0 +1,1 @@
+create or replace function get_all_users() returns table (email text) as $$ begin return query select u.email from auth.users u; end; $$ language plpgsql;
