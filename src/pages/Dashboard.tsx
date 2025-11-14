@@ -3,8 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import { Headphones, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clock, FileX2, MessageSquare } from "lucide-react";
+import { Headphones, Phone, Target, ArrowRight, Activity, TrendingUp, Users, Clock, FileX2, MessageSquare, User, Bot, ArrowUp } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const allAgents = [
   {
@@ -63,6 +66,11 @@ const Dashboard = () => {
   const [allUsers, setAllUsers] = useState<any[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+
+  // State for the RAG chatbot
+  const [ragMessage, setRagMessage] = useState("");
+  const [ragChatHistory, setRagChatHistory] = useState<any[]>([]);
+  const [isSendingRagMessage, setIsSendingRagMessage] = useState(false);
 
   useEffect(() => {
     const getSessionAndPermissions = async () => {
@@ -138,6 +146,26 @@ const Dashboard = () => {
     };
   }, [navigate]);
 
+  const handleSendMessage = async () => {
+    if (ragMessage.trim() === "") return;
+
+    const userMessage = { role: "user", content: ragMessage };
+    setRagChatHistory(prev => [...prev, userMessage]);
+    setRagMessage("");
+    setIsSendingRagMessage(true);
+
+    // Replace with your actual RAG chatbot API endpoint
+    // For demonstration, we'll use a mock response
+    setTimeout(() => {
+      const botResponse = {
+        role: "bot",
+        content: `This is a mock response to: "${ragMessage}". In a real application, this would be a response from the RAG chatbot based on the provided knowledge base.`
+      };
+      setRagChatHistory(prev => [...prev, botResponse]);
+      setIsSendingRagMessage(false);
+    }, 1500);
+  };
+
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -195,53 +223,97 @@ const Dashboard = () => {
         <div className="space-y-6">
           <h2 className="text-2xl font-bold text-primary mb-6">AI Agent Testing Suite</h2>
           
-          {availableAgents.length > 0 ? (
-            availableAgents.map((agent, index) => (
-              <Card key={agent.id} className="bg-gradient-card border-card-border hover-lift hover-glow shadow-soft animate-slide-up" style={{ animationDelay: `${index * 0.2}s` }}>
-                <CardContent className="p-8">
-                  <div className="grid lg:grid-cols-2 gap-8 items-center">
-                    <div>
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${agent.color} flex items-center justify-center shadow-medium`}>
-                          <agent.icon className="w-8 h-8 text-primary-foreground" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold text-primary">{agent.title}</h3>
-                          <p className="text-muted-foreground">{agent.description}</p>
-                        </div>
+          {availableAgents.map((agent, index) => (
+            <Card key={agent.id} className="bg-gradient-card border-card-border hover-lift hover-glow shadow-soft animate-slide-up" style={{ animationDelay: `${index * 0.2}s` }}>
+              <CardContent className="p-8">
+                <div className="grid lg:grid-cols-2 gap-8 items-center">
+                  <div>
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${agent.color} flex items-center justify-center shadow-medium`}>
+                        <agent.icon className="w-8 h-8 text-primary-foreground" />
                       </div>
-                      <div className="mb-6 p-4 bg-secondary/50 rounded-lg border border-card-border">
-                        <h4 className="font-semibold text-primary mb-2">Use Case Scenario:</h4>
-                        <p className="text-sm text-muted-foreground">{agent.scenario}</p>
+                      <div>
+                        <h3 className="text-2xl font-bold text-primary">{agent.title}</h3>
+                        <p className="text-muted-foreground">{agent.description}</p>
                       </div>
-                      <Link to={agent.testUrl}>
-                        <Button variant="hero" size="lg" className="w-full sm:w-auto">
-                          Test This Agent <ArrowRight className="ml-2 w-5 h-5" />
-                        </Button>
-                      </Link>
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-primary mb-4">Key Features:</h4>
-                      <ul className="space-y-3">
-                        {agent.features.map((feature, featureIndex) => (
-                          <li key={featureIndex} className="flex items-start gap-3">
-                            <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                            <span className="text-sm text-muted-foreground">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="mb-6 p-4 bg-secondary/50 rounded-lg border border-card-border">
+                      <h4 className="font-semibold text-primary mb-2">Use Case Scenario:</h4>
+                      <p className="text-sm text-muted-foreground">{agent.scenario}</p>
                     </div>
+                    <Link to={agent.testUrl}>
+                      <Button variant="hero" size="lg" className="w-full sm:w-auto">
+                        Test This Agent <ArrowRight className="ml-2 w-5 h-5" />
+                      </Button>
+                    </Link>
                   </div>
-                </CardContent>
-              </Card>
-            ))
-          ) : (
-            <Card className="bg-gradient-card border-card-border">
-              <CardContent className="p-8 text-center">
-                <p className="text-muted-foreground">No AI agents have been assigned to you yet. Please contact an administrator.</p>
+                  <div>
+                    {agent.id === 'rag-chatbot' ? (
+                      <div className="flex flex-col h-[400px] bg-background-alt rounded-lg border border-card-border p-4">
+                        <p className="text-primary font-semibold mb-2">Live Chat</p>
+                        <ScrollArea className="flex-1 p-4 border-2 border-green-500/30 rounded-lg bg-muted/20 mb-4">
+                          <div className="space-y-4">
+                            {ragChatHistory.map((chat, index) => (
+                              <div key={index} className={`flex items-start gap-3 ${chat.role === "user" ? "justify-end" : ""}`}>
+                                {chat.role === "bot" && (
+                                  <Avatar className="w-8 h-8 border">
+                                    <AvatarFallback><Bot size={18} /></AvatarFallback>
+                                  </Avatar>
+                                )}
+                                <div className={`rounded-lg p-3 max-w-xs lg:max-w-md ${chat.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                                  <p className="text-sm">{chat.content}</p>
+                                </div>
+                                {chat.role === "user" && (
+                                  <Avatar className="w-8 h-8 border">
+                                    <AvatarFallback><User size={18} /></AvatarFallback>
+                                  </Avatar>
+                                )}
+                              </div>
+                            ))}
+                             {isSendingRagMessage && (
+                                <div className="flex items-start gap-3">
+                                    <Avatar className="w-8 h-8 border">
+                                        <AvatarFallback><Bot size={18} /></AvatarFallback>
+                                    </Avatar>
+                                    <div className="rounded-lg p-3 bg-muted text-muted-foreground animate-pulse">
+                                        <p className="text-sm">Thinking...</p>
+                                    </div>
+                                </div>
+                            )}
+                          </div>
+                        </ScrollArea>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            value={ragMessage}
+                            onChange={(e) => setRagMessage(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && !isSendingRagMessage && handleSendMessage()}
+                            placeholder="Type your message..."
+                            className="flex-1"
+                            disabled={isSendingRagMessage}
+                          />
+                          <Button onClick={handleSendMessage} disabled={isSendingRagMessage || ragMessage.trim() === ''}>
+                            <ArrowUp size={20} />
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <h4 className="font-semibold text-primary mb-4">Key Features:</h4>
+                        <ul className="space-y-3">
+                          {agent.features.map((feature, featureIndex) => (
+                            <li key={featureIndex} className="flex items-start gap-3">
+                              <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
+                              <span className="text-sm text-muted-foreground">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </CardContent>
             </Card>
-          )}
+          ))}
         </div>
 
         {isAdmin && (
