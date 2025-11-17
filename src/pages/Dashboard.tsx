@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import UserPermissions from "@/components/UserPermissions";
 
 const allAgents = [
   {
@@ -243,20 +244,20 @@ const Dashboard = () => {
           ))}
         </div>
 
+
+
         {isAdmin && (
             <div className="mt-8">
                 <h2 className="text-2xl font-bold text-primary mb-6">User Management</h2>
                 <Card className="bg-gradient-card border-card-border animate-fade-in">
                     <CardHeader>
                         <CardTitle className="text-primary">Application Users</CardTitle>
-                        <CardDescription>All registered users in the application.</CardDescription>
+                        <CardDescription>Manage user access to AI agents.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-2 max-h-60 overflow-y-auto">
-                            {allUsers.length > 0 ? allUsers.map(appUser => (
-                                <div key={appUser.id} className="p-3 flex justify-between items-center bg-secondary/50 rounded-lg border border-card-border">
-                                    <p className="text-sm text-muted-foreground">{appUser.email}</p>
-                                </div>
+                        <div className="space-y-4 max-h-96 overflow-y-auto">
+                            {allUsers.length > 0 ? allUsers.filter(appUser => appUser.email !== user.email).map(appUser => (
+                                <UserPermissions key={appUser.id} user={appUser} allAgents={availableAgents} />
                             )) : <p className="text-sm text-muted-foreground">No users found.</p>}
                         </div>
                     </CardContent>

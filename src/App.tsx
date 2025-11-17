@@ -31,11 +31,11 @@ const App = () => (
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-          <Route path="/test/hospitality-coach" element={<ProtectedRoute><HospitalityCoach /></ProtectedRoute>} />
+          <Route path="/test/hospitality-coach" element={<ProtectedRoute agentTitle="Hospitality Coach"><HospitalityCoach /></ProtectedRoute>} />
           <Route path="/test/inbound" element={<InboundTest />} />
           <Route path="/test/dead-lead-reactivation" element={<DeadLeadReactivationTest />} />
-          <Route path="/test/missing-documents" element={<ProtectedRoute><MissingDocuments /></ProtectedRoute>} />
-          <Route path="/test/rag-chatbot" element={<ProtectedRoute><RagChatbotTest /></ProtectedRoute>} />
+          <Route path="/test/missing-documents" element={<ProtectedRoute agentTitle="Missing Documents"><MissingDocuments /></ProtectedRoute>} />
+          <Route path="/test/rag-chatbot" element={<ProtectedRoute agentTitle="RAG Chatbot"><RagChatbotTest /></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
