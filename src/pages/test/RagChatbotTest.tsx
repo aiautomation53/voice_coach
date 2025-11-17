@@ -19,7 +19,7 @@ const RagChatbotTest = () => {
     import('https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js')
       .then(module => {
         chat = module.createChat({
-          webhookUrl: 'https://n8n.srv856353.hstgr.cloud/webhook/b498eab6-da02-46a8-b07d-bd2d00829138/chat'
+          webhookUrl: 'https://n8n.srv856353.hstgr.cloud/webhook/f9afdfb5-0e27-4efd-8cb8-6213f26de3a1/chat'
         });
       })
       .catch(e => console.error("Failed to load n8n chat module", e));
