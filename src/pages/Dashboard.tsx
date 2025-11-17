@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import UserPermissions from "@/components/UserPermissions";
+import CreateUserDialog from "@/components/CreateUserDialog";
 
 const allAgents = [
   {
@@ -68,6 +69,19 @@ const Dashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
+  const fetchUsers = async () => {
+    const { data: users, error: usersError } = await supabase.rpc('get_all_users');
+    if (usersError) {
+        console.error("Error fetching all users:", usersError.message);
+    } else {
+        setAllUsers(users);
+    }
+  };
+
+  const refreshUsers = () => {
+    fetchUsers();
+  };
+
   useEffect(() => {
     const getSessionAndPermissions = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
@@ -92,12 +106,7 @@ const Dashboard = () => {
       }
 
       if (isAdminUser) {
-        const { data: users, error: usersError } = await supabase.rpc('get_all_users');
-        if (usersError) {
-            console.error("Error fetching all users:", usersError.message);
-        } else {
-            setAllUsers(users);
-        }
+        fetchUsers();
       }
 
       const { data: products, error: productsError } = await supabase.from('products').select('id, name');
@@ -250,9 +259,12 @@ const Dashboard = () => {
             <div className="mt-8">
                 <h2 className="text-2xl font-bold text-primary mb-6">User Management</h2>
                 <Card className="bg-gradient-card border-card-border animate-fade-in">
-                    <CardHeader>
-                        <CardTitle className="text-primary">Application Users</CardTitle>
-                        <CardDescription>Manage user access to AI agents.</CardDescription>
+                    <CardHeader className="flex flex-row items-center justify-between">
+                        <div>
+                            <CardTitle className="text-primary">Application Users</CardTitle>
+                            <CardDescription>Manage user access to AI agents.</CardDescription>
+                        </div>
+                        <CreateUserDialog onUserCreated={refreshUsers} />
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4 max-h-96 overflow-y-auto">
