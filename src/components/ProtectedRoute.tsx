@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
       const { data, error } = await supabase.auth.getUser();
       if (error || !data?.user) {
         setIsAuthenticated(false);
-        navigate('/register');
+        navigate('/login'); // Changed from /register to /login
       } else {
         setIsAuthenticated(true);
       }
@@ -30,7 +30,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         setIsAuthenticated(true);
       } else if (event === 'SIGNED_OUT') {
         setIsAuthenticated(false);
-        navigate('/register');
+        navigate('/login'); // Changed from /register to /login
       }
     });
 

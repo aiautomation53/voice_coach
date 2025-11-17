@@ -67,11 +67,6 @@ const Dashboard = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
-  // State for the RAG chatbot
-  const [ragMessage, setRagMessage] = useState("");
-  const [ragChatHistory, setRagChatHistory] = useState<any[]>([]);
-  const [isSendingRagMessage, setIsSendingRagMessage] = useState(false);
-
   useEffect(() => {
     const getSessionAndPermissions = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
@@ -146,25 +141,7 @@ const Dashboard = () => {
     };
   }, [navigate]);
 
-  const handleSendMessage = async () => {
-    if (ragMessage.trim() === "") return;
 
-    const userMessage = { role: "user", content: ragMessage };
-    setRagChatHistory(prev => [...prev, userMessage]);
-    setRagMessage("");
-    setIsSendingRagMessage(true);
-
-    // Replace with your actual RAG chatbot API endpoint
-    // For demonstration, we'll use a mock response
-    setTimeout(() => {
-      const botResponse = {
-        role: "bot",
-        content: `This is a mock response to: "${ragMessage}". In a real application, this would be a response from the RAG chatbot based on the provided knowledge base.`
-      };
-      setRagChatHistory(prev => [...prev, botResponse]);
-      setIsSendingRagMessage(false);
-    }, 1500);
-  };
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -248,55 +225,6 @@ const Dashboard = () => {
                     </Link>
                   </div>
                   <div>
-                    {agent.id === 'rag-chatbot' ? (
-                      <div className="flex flex-col h-[400px] bg-background-alt rounded-lg border border-card-border p-4">
-                        <p className="text-primary font-semibold mb-2">Live Chat</p>
-                        <ScrollArea className="flex-1 p-4 border-2 border-green-500/30 rounded-lg bg-muted/20 mb-4">
-                          <div className="space-y-4">
-                            {ragChatHistory.map((chat, index) => (
-                              <div key={index} className={`flex items-start gap-3 ${chat.role === "user" ? "justify-end" : ""}`}>
-                                {chat.role === "bot" && (
-                                  <Avatar className="w-8 h-8 border">
-                                    <AvatarFallback><Bot size={18} /></AvatarFallback>
-                                  </Avatar>
-                                )}
-                                <div className={`rounded-lg p-3 max-w-xs lg:max-w-md ${chat.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                                  <p className="text-sm">{chat.content}</p>
-                                </div>
-                                {chat.role === "user" && (
-                                  <Avatar className="w-8 h-8 border">
-                                    <AvatarFallback><User size={18} /></AvatarFallback>
-                                  </Avatar>
-                                )}
-                              </div>
-                            ))}
-                             {isSendingRagMessage && (
-                                <div className="flex items-start gap-3">
-                                    <Avatar className="w-8 h-8 border">
-                                        <AvatarFallback><Bot size={18} /></AvatarFallback>
-                                    </Avatar>
-                                    <div className="rounded-lg p-3 bg-muted text-muted-foreground animate-pulse">
-                                        <p className="text-sm">Thinking...</p>
-                                    </div>
-                                </div>
-                            )}
-                          </div>
-                        </ScrollArea>
-                        <div className="flex items-center gap-2">
-                          <Input
-                            value={ragMessage}
-                            onChange={(e) => setRagMessage(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && !isSendingRagMessage && handleSendMessage()}
-                            placeholder="Type your message..."
-                            className="flex-1"
-                            disabled={isSendingRagMessage}
-                          />
-                          <Button onClick={handleSendMessage} disabled={isSendingRagMessage || ragMessage.trim() === ''}>
-                            <ArrowUp size={20} />
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
                       <div>
                         <h4 className="font-semibold text-primary mb-4">Key Features:</h4>
                         <ul className="space-y-3">
@@ -308,7 +236,6 @@ const Dashboard = () => {
                           ))}
                         </ul>
                       </div>
-                    )}
                   </div>
                 </div>
               </CardContent>

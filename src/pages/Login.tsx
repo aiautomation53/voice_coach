@@ -13,7 +13,6 @@ import { useToast } from "@/hooks/use-toast";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -22,7 +21,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -107,27 +106,7 @@ const Login = () => {
                   </div>
                 </div>
 
-                {/* Remember Me & Forgot Password */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox 
-                      id="remember"
-                      checked={rememberMe}
-                      onCheckedChange={(checked) => setRememberMe(checked === true)}
-                    />
-                    <Label htmlFor="remember" className="text-sm text-muted-foreground cursor-pointer">
-                      Remember me
-                    </Label>
-                  </div>
-                  {/*
-                  <Link 
-                    to="/reset-password" 
-                    className="text-sm text-accent hover:text-accent-light transition-colors"
-                  >
-                    Forgot password?
-                  </Link>
-                  */}
-                </div>
+
 
                 {/* Submit Button */}
                 <Button 
