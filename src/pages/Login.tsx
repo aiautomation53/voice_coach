@@ -119,12 +119,14 @@ const Login = () => {
                       Remember me
                     </Label>
                   </div>
+                  {/*
                   <Link 
                     to="/reset-password" 
                     className="text-sm text-accent hover:text-accent-light transition-colors"
                   >
                     Forgot password?
                   </Link>
+                  */}
                 </div>
 
                 {/* Submit Button */}
@@ -148,13 +150,7 @@ const Login = () => {
               {/* Register Link */}
               <div className="mt-6 text-center border-t border-card-border pt-6">
                 <p className="text-sm text-muted-foreground">
-                  Don't have an account?{" "}
-                  <Link 
-                    to="/register" 
-                    className="text-accent hover:text-accent-light font-medium transition-colors"
-                  >
-                    Sign up for free
-                  </Link>
+                  Don't have an account? Contact support
                 </p>
               </div>
             </CardContent>

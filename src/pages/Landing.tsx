@@ -152,13 +152,7 @@ const Landing = () => {
             <p className="text-xl mb-8 text-primary-foreground/90">
               Join thousands of businesses using AI voice agents to increase conversions and streamline their sales operations.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/register">
-                <Button variant="hero" size="xl" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-glow">
-                  Start Your Free Trial <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-            </div>
+
           </div>
         </div>
       </section>

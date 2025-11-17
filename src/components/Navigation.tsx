@@ -46,11 +46,7 @@ const Navigation = ({ isAuthenticated = false, user, onLogout }: NavigationProps
                     Login
                   </Button>
                 </Link>
-                <Link to="/register">
-                  <Button variant="hero" size="sm">
-                    Get Started
-                  </Button>
-                </Link>
+
               </div>
             )}
           </nav>
