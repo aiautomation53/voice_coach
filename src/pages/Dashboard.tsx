@@ -162,12 +162,7 @@ const Dashboard = () => {
     }
   };
 
-  const stats = [
-    { label: "Tests Completed", value: "12", icon: Activity, color: "text-accent" },
-    { label: "Success Rate", value: "87%", icon: TrendingUp, color: "text-success" },
-    { label: "Active Agents", value: availableAgents.length, icon: Users, color: "text-primary" },
-    { label: "Total Sessions", value: "45m", icon: Clock, color: "text-muted-foreground" },
-  ];
+
 
   if (!user) {
     return null; // Or a loading spinner
@@ -191,21 +186,7 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {stats.map((stat, index) => (
-            <Card key={stat.label} className="bg-gradient-card border-card-border hover-lift animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3">
-                  <stat.icon className={`w-8 h-8 ${stat.color}`} />
-                  <div>
-                    <p className="text-2xl font-bold text-primary">{stat.value}</p>
-                    <p className="text-sm text-muted-foreground">{stat.label}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+
 
         <div className="space-y-6">
           <h2 className="text-2xl font-bold text-primary mb-6">AI Agent Testing Suite</h2>
