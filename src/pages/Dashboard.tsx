@@ -153,6 +153,10 @@ const Dashboard = () => {
 
 
 
+  const handleUserDeleted = (userId: string) => {
+    setAllUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+  };
+
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -250,7 +254,7 @@ const Dashboard = () => {
                     <CardContent>
                         <div className="space-y-4 max-h-96 overflow-y-auto">
                             {allUsers.length > 0 ? allUsers.filter(appUser => appUser.email !== user.email).map(appUser => (
-                                <UserPermissions key={appUser.id} user={appUser} allAgents={availableAgents} />
+                                <UserPermissions key={appUser.id} user={appUser} allAgents={availableAgents} onUserDeleted={handleUserDeleted} />
                             )) : <p className="text-sm text-muted-foreground">No users found.</p>}
                         </div>
                     </CardContent>

@@ -4,13 +4,25 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface UserPermissionsProps {
   user: any;
   allAgents: any[];
+  onUserDeleted: (userId: string) => void;
 }
 
-const UserPermissions: React.FC<UserPermissionsProps> = ({ user, allAgents }) => {
+const UserPermissions: React.FC<UserPermissionsProps> = ({ user, allAgents, onUserDeleted }) => {
   const [permissions, setPermissions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
@@ -84,6 +96,24 @@ const UserPermissions: React.FC<UserPermissionsProps> = ({ user, allAgents }) =>
     });
   };
 
+  const handleDelete = async () => {
+    const { error } = await supabase.rpc('delete_user', { user_id_to_delete: user.id });
+
+    if (error) {
+      toast({
+        title: "Error deleting user",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "User deleted",
+        description: `User ${user.email} have been deleted successfully.`,
+      });
+      onUserDeleted(user.id);
+    }
+  };
+
   if (isLoading) {
     return <div className="p-3 text-sm text-muted-foreground">Loading permissions...</div>;
   }
@@ -105,9 +135,30 @@ const UserPermissions: React.FC<UserPermissionsProps> = ({ user, allAgents }) =>
           </div>
         ))}
       </div>
-      <Button onClick={handleSave} size="sm" className="mt-4">
-        Save Permissions
-      </Button>
+      <div className="flex justify-end space-x-2 mt-4">
+        <Button onClick={handleSave} size="sm">
+          Save Permissions
+        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" size="sm">
+              Delete User
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete the user and all their data.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </div>
   );
 };
