@@ -167,6 +167,29 @@ const MissingDocuments = () => {
     }
   };
 
+  const handleExecuteWorkflow = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/webhook/c120cc60-9175-4a4d-b89a-02a977831e7e', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ /* You might want to send some data here, e.g., current tradeId or other relevant info */ }),
+      });
+
+      if (response.ok) {
+        toast({ title: "Workflow Executed", description: "The workflow has been triggered successfully." });
+      } else {
+        const errorText = await response.text();
+        toast({ title: "Workflow Execution Failed", description: `Server responded with an error: ${errorText}`, variant: "destructive" });
+      }
+    } catch (error) {
+      console.error("Error executing workflow:", error);
+      toast({ title: "Workflow Execution Failed", description: "A network error occurred while executing the workflow.", variant: "destructive" });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setTradeData((prev: any) => ({ ...prev, [name]: value }));
@@ -253,6 +276,7 @@ const MissingDocuments = () => {
     }
     return (
       <div className="flex items-center justify-center space-x-4">
+        <Button onClick={handleExecuteWorkflow} disabled={isLoading} className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg">Execute Workflow</Button>
         <Button onClick={() => setAction('add')} className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg"><PlusCircle className="w-5 h-5 mr-2" />Add a Record</Button>
         <Button onClick={() => setAction('update')} className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-lg"><Edit className="w-5 h-5 mr-2" />Update a Record</Button>
       </div>
