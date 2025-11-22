@@ -9,6 +9,10 @@
       "destination": "https://n8n.srv856353.hstgr.cloud/webhook/9238431c-e75e-46c8-930a-85c03a326cb4"
     },
     {
+      "source": "/api/webhook/c120cc60-9175-4a4d-b89a-02a977831e7e",
+      "destination": "https://n8n.srv856353.hstgr.cloud/webhook/c120cc60-9175-4a4d-b89a-02a977831e7e"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
